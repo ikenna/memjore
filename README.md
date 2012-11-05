@@ -1,4 +1,4 @@
-memphis-clj
+memjure
 ===========
 
-memphis-clj
+Member management in Clojure
