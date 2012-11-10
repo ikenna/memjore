@@ -1,7 +1,8 @@
 (ns memjore.views.welcome
   (:require [memjore.views.common :as common]
              [monger core collection])
-  (:use [noir.core :only [defpage]]))
+  (:use [noir.core :only [defpage defpartial]]
+        [hiccup.form :only [label text-field form-to]]))
 
 
 (defpage "/" []
@@ -10,14 +11,13 @@
            [:a {:href "/members"} "Show Members"]))
 
 
+
 (monger.core/connect!)
 (monger.core/set-db! (monger.core/get-db "test"))
 
 
 (defn get-member [n]
   (first (monger.collection/find-maps "members" {:id n})))
-
-
 
 (defn members []
   (monger.collection/find-maps "members" ))
@@ -35,4 +35,16 @@
 	   [:table {:border 1}
 	     [:tr [:th "First Name"] [:th "Last Name"][:th "Mobile"] [:th "Address"][:th ""]]
 	    (for [m (members)]
-	     [:tr [:td (:fname m)] [:td (:lname m)] [:td (:mobile m)][:td (:addr m)] (edit_button m)]) ]]))
+              [:tr [:td (:fname m)] [:td (:lname m)] [:td (:mobile m)][:td (:addr m)] (edit_button m)]) ]]))
+
+
+(defpartial user-fields [{:keys [fname lname]}]
+  (label "firstname" "First name:")
+  (text-field "firstname" fname)
+  (label "lastname" "Last name:")
+  (text-field "lastname" lname))
+
+(defpage "/member/edit/:id" {:keys [id]}
+  (common/layout
+   (form-to [:post "/user/add"]
+   (user-fields (get-member (Integer/valueOf id))))))
