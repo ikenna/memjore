@@ -9,4 +9,5 @@
                (include-css "/css/style.css") ]
               [:body
                [:div#wrapper
+                [:div#header [:h1 "Memphis"]]
                 content]]))
