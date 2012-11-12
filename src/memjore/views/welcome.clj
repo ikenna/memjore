@@ -2,7 +2,7 @@
   (:require [memjore.views.common :as common]
              [monger core collection])
   (:use [noir.core :only [defpage defpartial]]
-        [hiccup.form :only [label text-field form-to]]))
+        [hiccup.form :only [label text-field form-to drop-down]]))
 
 
 (defpage "/" []
@@ -38,13 +38,21 @@
               [:tr [:td (:fname m)] [:td (:lname m)] [:td (:mobile m)][:td (:addr m)] (edit_button m)]) ]]))
 
 
-(defpartial user-fields [{:keys [fname lname]}]
-  (label "firstname" "First name:")
-  (text-field "firstname" fname)
-  (label "lastname" "Last name:")
-  (text-field "lastname" lname))
+(defpartial user-fields [{:keys [fname lname mobile pnumber address mtype]}]
+  [:div#editform
+   [:p   (label "firstname" "First name:") (text-field "firstname" fname)]
+   [:p   (label "lastname" "Last name:") (text-field "lastname" lname)]
+   [:p   (label "mobile" "Mobile:") (text-field "mobile" mobile)]
+   [:p   (label "phone no" "Phone number:") (text-field "phone" pnumber)]
+   [:p   (label "address" "Address:") (text-field "address" address) ]
+   [:p   (label "membertype" "Type:")     (drop-down "mtype" mtype)] ] )
+
+
+(defpartial edit-form-heading []
+  [:h2 "Edit Member"] )
 
 (defpage "/member/edit/:id" {:keys [id]}
   (common/layout
+   (edit-form-heading)
    (form-to [:post "/user/add"]
    (user-fields (get-member (Integer/valueOf id))))))

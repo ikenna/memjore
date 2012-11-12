@@ -6,7 +6,7 @@
             (html5
               [:head
                [:title "memjore"]
-               (include-css "/css/reset.css")]
+               (include-css "/css/style.css") ]
               [:body
                [:div#wrapper
                 content]]))
