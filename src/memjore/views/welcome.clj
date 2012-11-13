@@ -1,10 +1,15 @@
-(ns memjore.views.welcome
+(ns
+    ^{:author "Ikenna Nwaiwu"
+      :doc "This file contains the web display elements of the app "}
+    memjore.views.welcome
   (:require [memjore.views.common :as common]
              [monger core collection])
-  (:use [noir.core :only [defpage defpartial]]
-         [noir.response :only [redirect]]
+  (:use [noir.core :only [defpage defpartial render]]
+        [noir.response :only [redirect]]
+        [noir.validation :as valid]
         [hiccup.form :only [label text-field form-to drop-down submit-button text-area]]
-         [hiccup.element :only [link-to]]))
+        [hiccup.element :only [link-to]]
+        [clojure.tools.trace :as tracer]))
 
 
 (defpage "/" []
@@ -28,8 +33,12 @@
 (defn display_member [member]
       [[:td (:fname member)] [:td (:lname member)]])
 
-(defn edit_button [member]
+(tracer/deftrace edit_button [member]
        [:td [:a {:href (str "/member/edit/" (:id member))} "Edit"]] )
+
+
+(defn err-mess [field]
+  (valid/on-error field str))
 
 (defpage "/members" []
   (common/layout
@@ -46,12 +55,12 @@
 
 (defpartial user-fields [{:keys [fname lname mobile phone address tags]}]
   [:div#editform
-   [:p   (label "firstname" "First name:") (text-field "fname" fname)]
-   [:p   (label "lastname" "Last name:") (text-field "lname" lname)]
-   [:p   (label "mobile" "Mobile:") (text-field "mobile" mobile)]
-   [:p   (label "phone no" "Phone number:") (text-field "phone" phone)]
+   [:p   (label "firstname" "First name:") (text-field "fname" fname)(err-mess :fname)]
+   [:p   (label "lastname" "Last name:")(text-field "lname" lname)(err-mess :lname) ]
+   [:p   (label "mobile" "Mobile:") (text-field "mobile" mobile) (err-mess :mobile) ]
+   [:p   (label "phone no" "Phone number:") (text-field "phone" phone) (err-mess :phone)]
    [:p   (label "address" "Address:") (text-area "address" address) ]
-   [:p   (label "tags" "Tags:")     (text-area "tags" tags)] ]
+   [:p   (label "tags" "Tags:") (text-area "tags" tags)] ]
    [:p   (submit-button "Submit") ])
 
 
@@ -64,24 +73,41 @@
    (form-to [:post "/user/add"]
    (user-fields (get-member (Integer/valueOf id))))))
 
-(defpage [:get "/member/add"] []
+
+(defpage [:get "/member/add"] {:keys [error] :as params}
   (common/layout
    [:h2 "Add Member"]
    (form-to [:post "/member/add"]
    (user-fields {}))))
 
-;;Checks if input to create a member is valid
-;;use noir validation framework to implement this
-(defn is-valid [m]
-  true)
+(defn is-valid
+  "Checks if input to create a member is valid"
+  [m]
+  (valid/rule (valid/has-value? (:fname m)) [:fname "first name is required"])
+  (valid/rule (valid/has-value? (:lname m)) [:lname "last name is required"])
+  (valid/rule (valid/has-value? (:address m)) [:address "address is required"])
+  (valid/rule (valid/has-value? (:phone m)) [:phone "phone number is required"])
+  (valid/rule (valid/has-value? (:mobile m)) [:mobile "mobile number is required"])
+  (valid/rule (valid/has-value? (:tags m)) [:tags "tags are required"])
+    
+  (not (valid/errors?)))
+
 
 (defpage [:post "/member/add"] {:keys [fname lname address mobile tags phone] :as input} 
   ;;validate
   (if (is-valid input)
-  ;;insert
-   (monger.collection/insert "members" input ))
+    ;;insert
+    (try
+    (monger.collection/insert "members" input )
+    (redirect "/members")
+    (catch Exception ex
+      (render "/member/add" (assoc input :error (.getMessage ex)))))
+    
+    (render "/member/add" input))
   
   ;;redirect to members page
-  (redirect "/members"))
+  )
   
 ;;  (common/layout (str "hi" member)))
+
+ 
