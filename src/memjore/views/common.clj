@@ -8,7 +8,10 @@
   (map
    #(let [[url text] %]
          [:span.main-menu-links (link-to url text)])
-       links))
+   links))
+
+(defpartial footer []
+  [:p (str "Memjore. Copyright Ikenna Nwaiwu") ])
 
 (defpartial layout [& content]
             (html5
@@ -25,4 +28,5 @@
                                  [ "/members/add" "Add Member"]
                                  [ "/sendtext" "Send Text"]
                                  [ "/sendemail" "Send Email"]])]]
-                [:div#content content]]]))
+                [:div#content content]
+                [:div#footer (footer)]]]))

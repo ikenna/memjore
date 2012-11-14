@@ -24,3 +24,13 @@ body{
 .main-menu-links a{
     color: white;
 }
+
+#footer{
+    text-align:center;
+  }
+
+#footer p{
+   background-color: #999966;
+    color: white;
+    padding: 2px;
+}
