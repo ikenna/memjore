@@ -56,14 +56,14 @@
 
 
 (defpartial user-fields [{:keys [fname lname mobile phone address tags] :as stuff}]
-  (println stuff) 
   [:div#editform
-   (map edit-text-field [[:fname fname "firstname" "First Name:"]
-                     [:lname lname "lastname" "Last Name:"]
-                     [:mobile mobile "mobile" "Mobile:"]
-                     [:phone phone "phone number" "Phone Number:"]
-                     [:address address "address" "Address:" :area-box]
-                     [:tags tags "tags" "Tags:" :area-box]])
+   (map edit-text-field [
+                         [:fname fname "firstname" "First Name:"]
+                         [:lname lname "lastname" "Last Name:"]
+                         [:mobile mobile "mobile" "Mobile:"]
+                         [:phone phone "phone number" "Phone Number:"]
+                         [:address address "address" "Address:" :area-box]
+                         [:tags tags "tags" "Tags:" :area-box]])
    [:p   (submit-button "Submit") ]])
 
 
