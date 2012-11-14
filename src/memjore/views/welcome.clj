@@ -3,12 +3,12 @@
       :doc "This file contains the web display elements of the app "}
     memjore.views.welcome
   (:require [memjore.views.common :as common])
-  (:use [noir.core :only [defpage defpartial render]]
+  (:use [noir.core :only [defpage defpartial render url-to]]
         [noir.response :only [redirect]]
-
         [memjore.models.db :as db]
         [memjore.models.validation]
-        [hiccup.form :only [label text-field form-to drop-down submit-button text-area]]
+        [hiccup.form :only
+         [label text-field form-to drop-down submit-button text-area]]
         [hiccup.element :only [link-to]]
         [clojure.tools.trace :as tracer]))
 
@@ -22,19 +22,33 @@
       [[:td (:fname member)] [:td (:lname member)]])
 
 (defn edit_button [member]
-       [:td [:a {:href (str "/member/edit/" (:id member))} "Edit"]] )
+  [:td (link-to (url-for editpage {:id (:id member)}) "Edit")]) 
 
+(defn display-member-rows [members]
+   (for [m members]
+     [:tr
+      [:td (:fname m)]
+      [:td (:lname m)]
+      [:td (:mobile m)]
+      [:td (:addr m)]
+      (edit_button m)]))
+
+(defn display-heading-row []
+  [:tr
+   [:th "First Name"]
+   [:th "Last Name"]
+   [:th "Mobile"]
+   [:th "Address"]
+   [:th ""]])
 
 (defpage "/members" []
   (common/layout
    [:p (link-to "/member/add" "Add Member")]
-   
    [:h3 "All Members"]
-   [:div {:class "center" }
+   [:div.center
      [:table {:border 1}
-	     [:tr [:th "First Name"] [:th "Last Name"][:th "Mobile"] [:th "Address"][:th ""]]
-	    (for [m (members)]
-              [:tr [:td (:fname m)] [:td (:lname m)] [:td (:mobile m)][:td (:addr m)] (edit_button m)]) ]]))
+	   (display-heading-row)
+	   (display-member-rows (members)) ]]))
 
 (defn edit-text-field [f]
   (let [[symbol id name areabox] f]
@@ -54,13 +68,9 @@
    [:p   (submit-button "Submit") ]])
 
 
-
-(defpartial edit-form-heading []
-  [:h2 "Edit Member"] )
-
-(defpage "/member/edit/:id" {:keys [id]}
+(defpage editpage "/member/edit/:id" {:keys [id]}
   (common/layout
-   (edit-form-heading)
+   [:h2 "Edit Member"] 
    (form-to [:post "/user/add"]
    (user-fields (get-member (Integer/valueOf id))))))
 
@@ -72,14 +82,12 @@
    (user-fields {}))))
 
 
-
 (defpage [:post "/member/add"] {:as input} 
   (if (is-valid input)
     (do
       (db/add-member input)
       (redirect "/members"))
-    (render "/member/add" input))
-  )
+    (render "/member/add" input)))
   
 
 
