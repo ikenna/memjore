@@ -21,7 +21,7 @@
       [[:td (:fname member)] [:td (:lname member)]])
 
 (defn edit_button [member]
-  [:td (link-to (url-for editpage {:id (:id member)}) "Edit")]) 
+  [:td (link-to (url-for editpage {:id (:_id member)}) "Edit")]) 
 
 (defn display-member-rows [members]
    (for [m members]
@@ -49,20 +49,21 @@
 	   (display-member-rows (members)) ]]))
 
 (defn edit-text-field [f]
-  (let [[symbol id name areabox] f]
+  (let [[symbol value id name areabox] f]
     [:p (label id name)
-     (if (nil? areabox)(text-field symbol) (text-area symbol) )
+     (if (nil? areabox)(text-field symbol value) (text-area symbol value) )
      (err-mess symbol)]))
 
 
-(defpartial user-fields [{:keys [fname lname mobile phone address tags]}]
+(defpartial user-fields [{:keys [fname lname mobile phone address tags] :as stuff}]
+  (println stuff) 
   [:div#editform
-   (map edit-text-field [[:fname "firstname" "First Name:"]
-                     [:lname "lastname" "Last Name:"]
-                     [:mobile "mobile" "Mobile:"]
-                     [:phone "phone number" "Phone Number:"]
-                     [:address "address" "Address:" :area-box]
-                     [:tags "tags" "Tags:" :area-box]])
+   (map edit-text-field [[:fname fname "firstname" "First Name:"]
+                     [:lname lname "lastname" "Last Name:"]
+                     [:mobile mobile "mobile" "Mobile:"]
+                     [:phone phone "phone number" "Phone Number:"]
+                     [:address address "address" "Address:" :area-box]
+                     [:tags tags "tags" "Tags:" :area-box]])
    [:p   (submit-button "Submit") ]])
 
 
@@ -80,7 +81,7 @@
   (common/layout
    [:h2 "Edit Member"] 
    (form-to [:post "/user/add"]
-   (user-fields (get-member (Integer/valueOf id))))))
+   (user-fields (get-member id)))))
 
 
 (defpage [:get "/members/add"] {:keys [error] :as params}
