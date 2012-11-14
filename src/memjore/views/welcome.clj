@@ -15,8 +15,7 @@
 
 (defpage "/" []
          (common/layout
-	   [:p "Welcome"]
-           [:a {:href "/members"} "Show Members"]))
+	   [:h2 "Home"]))
 
 (defn display_member [member]
       [[:td (:fname member)] [:td (:lname member)]])
@@ -65,6 +64,16 @@
                      [:address "address" "Address:" :area-box]
                      [:tags "tags" "Tags:" :area-box]])
    [:p   (submit-button "Submit") ]])
+
+
+(defpage sendtext "/sendtext" []
+  (common/layout
+   [:h2 "Send a text" ]))
+
+(defpage homepage "/sendemail" []
+  (common/layout
+   [:h2 "Send Email" ]))
+
 
 
 (defpage editpage "/members/edit/:id" {:keys [id]}

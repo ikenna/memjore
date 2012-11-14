@@ -23,7 +23,7 @@
                 [:div#header
                  [:h1 "Memjore"]
                  [:p.main-menu
-                  (main-links [  ["/home" "Home"]
+                  (main-links [  ["/" "Home"]
                                  [ "/members" "All Members"]
                                  [ "/members/add" "Add Member"]
                                  [ "/sendtext" "Send Text"]
