@@ -3,7 +3,7 @@
       :doc "This file contains the web display elements of the app "}
     memjore.views.welcome
   (:require [memjore.views.common :as common])
-  (:use [noir.core :only [defpage defpartial render url-to]]
+  (:use [noir.core :only [defpage defpartial render url-for]]
         [noir.response :only [redirect]]
         [memjore.models.db :as db]
         [memjore.models.validation]
@@ -43,7 +43,6 @@
 
 (defpage "/members" []
   (common/layout
-   [:p (link-to "/member/add" "Add Member")]
    [:h3 "All Members"]
    [:div.center
      [:table {:border 1}
@@ -68,26 +67,26 @@
    [:p   (submit-button "Submit") ]])
 
 
-(defpage editpage "/member/edit/:id" {:keys [id]}
+(defpage editpage "/members/edit/:id" {:keys [id]}
   (common/layout
    [:h2 "Edit Member"] 
    (form-to [:post "/user/add"]
    (user-fields (get-member (Integer/valueOf id))))))
 
 
-(defpage [:get "/member/add"] {:keys [error] :as params}
+(defpage [:get "/members/add"] {:keys [error] :as params}
   (common/layout
    [:h2 "Add Member"]
-   (form-to [:post "/member/add"]
+   (form-to [:post "/members/add"]
    (user-fields {}))))
 
 
-(defpage [:post "/member/add"] {:as input} 
+(defpage [:post "/members/add"] {:as input} 
   (if (is-valid input)
     (do
       (db/add-member input)
       (redirect "/members"))
-    (render "/member/add" input)))
+    (render "/members/add" input)))
   
 
 
