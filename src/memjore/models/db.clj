@@ -1,5 +1,5 @@
 (ns ^{:doc "functions to pull data from the db"}
-    memjore.model.db
+    memjore.models.db
     (:require [monger core collection]))
 
 
@@ -10,8 +10,8 @@
 (defn get-member [n]
   (first (monger.collection/find-maps "members" {:id n})))
 
-(defn add-member [n]
-  (monger.collection/insert "members" input ))
+(defn add-member [m]
+  (monger.collection/insert "members" m))
 
 (defn members []
   (monger.collection/find-maps "members" ))

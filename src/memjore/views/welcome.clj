@@ -6,8 +6,8 @@
   (:use [noir.core :only [defpage defpartial render]]
         [noir.response :only [redirect]]
 
-        [memjore.model.db :as db]
-        [memjore.model.validation]
+        [memjore.models.db :as db]
+        [memjore.models.validation]
         [hiccup.form :only [label text-field form-to drop-down submit-button text-area]]
         [hiccup.element :only [link-to]]
         [clojure.tools.trace :as tracer]))
@@ -36,17 +36,23 @@
 	    (for [m (members)]
               [:tr [:td (:fname m)] [:td (:lname m)] [:td (:mobile m)][:td (:addr m)] (edit_button m)]) ]]))
 
+(defn edit-text-field [f]
+  (let [[symbol id name areabox] f]
+    [:p (label id name)
+     (if (nil? areabox)(text-field symbol) (text-area symbol) )
+     (err-mess symbol)]))
 
 
 (defpartial user-fields [{:keys [fname lname mobile phone address tags]}]
   [:div#editform
-   [:p   (label "firstname" "First name:") (text-field "fname" fname)(err-mess :fname)]
-   [:p   (label "lastname" "Last name:")(text-field "lname" lname)(err-mess :lname) ]
-   [:p   (label "mobile" "Mobile:") (text-field "mobile" mobile) (err-mess :mobile) ]
-   [:p   (label "phone no" "Phone number:") (text-field "phone" phone) (err-mess :phone)]
-   [:p   (label "address" "Address:") (text-area "address" address) ]
-   [:p   (label "tags" "Tags:") (text-area "tags" tags)] ]
-   [:p   (submit-button "Submit") ])
+   (map edit-text-field [[:fname "firstname" "First Name:"]
+                     [:lname "lastname" "Last Name:"]
+                     [:mobile "mobile" "Mobile:"]
+                     [:phone "phone number" "Phone Number:"]
+                     [:address "address" "Address:" :area-box]
+                     [:tags "tags" "Tags:" :area-box]])
+   [:p   (submit-button "Submit") ]])
+
 
 
 (defpartial edit-form-heading []
@@ -67,7 +73,7 @@
 
 
 
-(defpage [:post "/member/add"] [input] 
+(defpage [:post "/member/add"] {:as input} 
   (if (is-valid input)
     (do
       (db/add-member input)
