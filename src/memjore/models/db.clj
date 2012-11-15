@@ -15,5 +15,8 @@
 (defn add-member [m]
   (monger.collection/insert "members" m))
 
+(defn edit-member [id updated-member-data]
+  (monger.collection/update-by-id "members" id updated-member-data))
+
 (defn members []
-  (monger.collection/find-maps "members" ))
+  (monger.collection/find-maps "members"))

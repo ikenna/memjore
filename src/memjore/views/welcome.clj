@@ -80,9 +80,17 @@
 (defpage editpage "/members/edit/:id" {:keys [id]}
   (common/layout
    [:h2 "Edit Member"] 
-   (form-to [:post "/user/add"]
+   (form-to [:post "/members/editpagehandler/"]
    (user-fields (get-member id)))))
 
+(defpage editpagehandler [:post "/members/editpagehandler/"] {:as req}
+  (common/layout
+   (do
+     (let [result (db/edit-member (:_id req) req)
+           error   (:error result)]
+       (if (:success result)
+         (redirect "/members")
+         (render "/members/add" req))))))
 
 (defpage [:get "/members/add"] {:keys [error] :as params}
   (common/layout
