@@ -1,6 +1,7 @@
 (ns ^{:doc "functions to pull data from the db"}
     memjore.models.db
-    (:require [monger core collection]))
+    (:require [monger core collection])
+    (:use [memjore.models.validation]))
 
 
 (monger.core/connect!)
@@ -13,7 +14,9 @@
     "members" {:_id (org.bson.types.ObjectId. id)})))
 
 (defn add-member [m]
-  (monger.collection/insert-and-return "members" m))
+  (if (is-valid m)
+    (monger.collection/insert-and-return "members" m)
+    {:status "Error persisting member"}))
 
 (defn edit-member [id updated-member-data]
   (monger.collection/update-by-id "members" id updated-member-data))
