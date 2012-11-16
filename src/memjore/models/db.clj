@@ -14,9 +14,9 @@
     "members" {:_id (org.bson.types.ObjectId. id)})))
 
 (defn add-member [m]
-  (if (is-valid m)
+  (if (true? (is-valid m))
     (monger.collection/insert-and-return "members" m)
-    {:status "Error persisting member"}))
+    {:message "Error persisting member" :success false}))
 
 (defn edit-member [id updated-member-data]
   (monger.collection/update-by-id "members" id updated-member-data))

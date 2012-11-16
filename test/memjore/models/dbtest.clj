@@ -14,7 +14,10 @@
 
 (fact "Should return error message if member to be persisted is invalid"
       (with-noir 
-        (:status (add-member john)) => "Error persisting member"
+        (:message (add-member john)) => "Error persisting member"
+        (provided (is-valid john) => false)
+        
+        (:success (add-member john)) => false
         (provided (is-valid john) => false)))
 
 

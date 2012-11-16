@@ -100,10 +100,8 @@
 
 
 (defpage [:post "/members/add"] {:as input} 
-  (if (is-valid input)
-    (do
-      (db/add-member input)
-      (redirect "/members"))
+  (if (:sucess (db/add-member input))
+    (redirect "/members")
     (render "/members/add" input)))
   
 
