@@ -13,7 +13,7 @@
     "members" {:_id (org.bson.types.ObjectId. id)})))
 
 (defn add-member [m]
-  (monger.collection/insert "members" m))
+  (monger.collection/insert-and-return "members" m))
 
 (defn edit-member [id updated-member-data]
   (monger.collection/update-by-id "members" id updated-member-data))
