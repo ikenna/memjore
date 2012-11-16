@@ -2,8 +2,9 @@
   (:use [midje.sweet]
         [memjore.models.db]))
 
-(fact
- (let [m0 {:fname "John" :lname "Lewis"}
-       m1 (add-member m0)
-       id (str (:_id m1))]
+(def john  {:fname "John" :lname "Lewis" :mobile "07838334323" :phone "0268903234" :email "john@localhost.com" :address "No 1 somewhere" :tags "member exco"})
+
+(fact "Should persist a member"
+ (let [m (add-member john)
+       id (str (:_id m))]
    (:fname (get-member id)) => "John"))
