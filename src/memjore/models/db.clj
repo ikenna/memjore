@@ -1,6 +1,8 @@
 (ns ^{:doc "functions to pull data from the db"}
     memjore.models.db
-    (:require [monger core collection])
+    (:require [monger core collection]
+              [clj-http.client :as client]
+              [clojure.data.json :as json])
     (:use [memjore.models.validation]))
 
 (monger.core/connect!)
@@ -24,3 +26,16 @@
 
 (defn members []
   (monger.collection/find-maps "members"))
+
+(defn build-url [message mobile]
+  (str "https://www.textmagic.com/app/api?username=xxxx&password=yyyy&cmd=send&text=" message "&phone=" mobile "&unicode=0"))
+
+(defn external-text-service [message mobile ]
+  (let [url      (build-url message mobile)
+        response (client/get url)]
+  (:body response)))
+
+(defn send-member-text [message ]
+   (vec (map #(external-text-service message (:mobile %)) [(first (members))])))
+
+

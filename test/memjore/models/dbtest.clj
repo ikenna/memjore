@@ -36,4 +36,10 @@
           (provided (is-valid r1) => true)
 
           (:fname (get-member id)) => "Johnx")
-          ))
+        ))
+
+
+
+(fact "Can send texts to members"
+      (send-member-text "Sampletext") => {:status :done})
+                 
