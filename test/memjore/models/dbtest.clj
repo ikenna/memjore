@@ -29,7 +29,10 @@
       (with-noir
         (let [r0 (add-member john)
               id (str (:_id r0))              
-              r1 (modify_fname_as_john_x r0)
-              r2 (edit-member id r1)]
-           (:fname (get-member id)) => "Johnx"
-          )))
+              r1 (modify_fname_as_john_x r0)]
+          
+          (.getField (edit-member id r1) "updatedExisting") => true
+          (provided (is-valid r1) => true)
+
+          (:fname (get-member id)) => "Johnx")
+          ))
