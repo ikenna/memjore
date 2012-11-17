@@ -19,7 +19,7 @@
     {:message "Error persisting member" :success false}))
 
 (defn edit-member [id updated-member-data]
-  (monger.collection/update-by-id "members" id updated-member-data))
+  (monger.collection/update "members" {:_id (org.bson.types.ObjectId. id)} updated-member-data))
 
 (defn members []
   (monger.collection/find-maps "members"))

@@ -20,4 +20,16 @@
         (:success (add-member john)) => false
         (provided (is-valid john) => false)))
 
+(defn modify_fname_as_john_x [x]
+  (let [m1 (dissoc x :_id)
+        m2 (assoc m1 :fname "Johnx")]
+    m2))
 
+(fact "Should edit member"
+      (with-noir
+        (let [r0 (add-member john)
+              id (str (:_id r0))              
+              r1 (modify_fname_as_john_x r0)
+              r2 (edit-member id r1)]
+           (:fname (get-member id)) => "Johnx"
+          )))
