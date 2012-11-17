@@ -3,7 +3,6 @@
     (:require [monger core collection])
     (:use [memjore.models.validation]))
 
-
 (monger.core/connect!)
 (monger.core/set-db! (monger.core/get-db "test"))
 

@@ -1,4 +1,5 @@
 (ns memjore.models.dbtest
+  (:require [monger core collection])
   (:use [midje.sweet]
         [noir.util.test]
         [memjore.models.db]
@@ -6,13 +7,13 @@
 
 (def john  {:fname "John" :lname "Lewis" :mobile "07838334323" :phone "0268903234" :email "john@localhost.com" :address "No 1 somewhere" :tags "member exco"})
 
-(fact "Should persist a member"
+(fact "Can persist a member"
       (with-noir
         (let [m (add-member john)
               id (str (:_id m))]
           (:fname (get-member id)) => "John")))
 
-(fact "Should return error message if member to be persisted is invalid"
+(fact "Can return error message if member to be persisted is invalid"
       (with-noir 
         (:message (add-member john)) => "Error persisting member"
         (provided (is-valid john) => false)
@@ -25,7 +26,7 @@
         m2 (assoc m1 :fname "Johnx")]
     m2))
 
-(fact "Should edit member"
+(fact "Can edit member"
       (with-noir
         (let [r0 (add-member john)
               id (str (:_id r0))              
