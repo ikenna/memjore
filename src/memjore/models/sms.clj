@@ -10,17 +10,23 @@
 (defn sms-password []
   (System/getProperty "smspassword"))
 
-(defn escape-message [m]
-  (url-encode m))
-
 (defn build-url [message mobile]
-  (str "https://www.textmagic.com/app/api?username=" (sms-username) "&password=" (sms-password) "&cmd=send&text=" (escape-message message) "&phone=" mobile "&unicode=0"))
+  (str
+   "https://www.textmagic.com/app/api?username="
+   (sms-username)
+   "&password="
+   (sms-password)
+   "&cmd=send&text="
+   (url-encode message)
+   "&phone="
+   mobile
+   "&unicode=0"))
 
 (defn http-call-text-service [message mobile ]
   (:body (client/get (build-url message mobile))))
 
 (defn send-text-to-all-members [message]
-   (vec (map #(http-call-text-service message (:mobile %)) [(first (members))])))
+   (vec (map #(http-call-text-service message (:mobile %)) (members))))
    
 (defn sms-username-password-set? []
   (and (sms-username) (sms-password)))
