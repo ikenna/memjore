@@ -23,7 +23,7 @@
    (vec (map #(http-call-text-service message (:mobile %)) [(first (members))])))
    
 (defn sms-username-password-set? []
-  (not (or (nil? (sms-username)) (nil? (sms-password)))))
+  (and (sms-username) (sms-password)))
 
 (defn get-username-password-error-message []
   (merge
