@@ -75,11 +75,20 @@
   (common/layout
    [:h2 "Send Email" ]))
 
+(defpartial display-error-messages-if-any [req]
+  (if (not (= (:success req) true))
+    [:h3.error (:message req)]))
+    
+
+
 (defpage editpage "/members/edit/:id" {:keys [id] :as req}
   (common/layout
-   [:h2 "Edit Member"] 
+   [:h2 "Edit Member"]
+   (display-error-messages-if-any req)
    (form-to [:post "/members/editpagehandler/"]
-   (user-fields (get-member id)))))
+            (user-fields (get-member id)))))
+
+
 
 (defpage editpagehandler [:post "/members/editpagehandler/"] {:as req}
    (do
@@ -87,7 +96,7 @@
            result (db/edit-member id req)]
        (if (:success result)
          (redirect "/members")
-         (editpage (assoc req result))))))
+         (editpage (merge req result))))))
 
 (defpage [:get "/members/add"] {:keys [error] :as params}
   (common/layout
