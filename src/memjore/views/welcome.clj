@@ -78,8 +78,6 @@
 (defpartial display-error-messages-if-any [req]
   (if (not (= (:success req) true))
     [:h3.error (:message req)]))
-    
-
 
 (defpage editpage "/members/edit/:id" {:keys [id] :as req}
   (common/layout
@@ -87,8 +85,6 @@
    (display-error-messages-if-any req)
    (form-to [:post "/members/editpagehandler/"]
             (user-fields (get-member id)))))
-
-
 
 (defpage editpagehandler [:post "/members/editpagehandler/"] {:as req}
    (do
@@ -103,7 +99,6 @@
    [:h2 "Add Member"]
    (form-to [:post "/members/add"]
    (user-fields {}))))
-
 
 (defpage [:post "/members/add"] {:as input} 
   (if (:sucess (db/add-member input))
