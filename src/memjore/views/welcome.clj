@@ -29,7 +29,7 @@
       [:td (:fname m)]
       [:td (:lname m)]
       [:td (:mobile m)]
-      [:td (:addr m)]
+      [:td (:address m)]
       (edit_button m)]))
 
 (defn display-heading-row []
@@ -94,16 +94,17 @@
          (redirect "/members")
          (editpage (merge req result))))))
 
-(defpage [:get "/members/add"] {:keys [error] :as params}
+(defpage addmember [:get "/members/add"] {:keys [error] :as req}
   (common/layout
    [:h2 "Add Member"]
    (form-to [:post "/members/add"]
-   (user-fields {}))))
+   (user-fields req))))
 
-(defpage [:post "/members/add"] {:as input} 
-  (if (:sucess (db/add-member input))
-    (redirect "/members")
-    (render "/members/add" input)))
+(defpage addmember-handler [:post "/members/add"] {:as req}
+  (let [result (db/add-member req)]
+    (if (:success result)
+      (redirect "/members")
+      (addmember (merge result req)))))
   
 
 

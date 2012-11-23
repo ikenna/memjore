@@ -14,8 +14,13 @@
 
 (defn add-member [m]
   (if (true? (is-valid m))
-    (monger.collection/insert-and-return "members" m)
-    {:message "Error persisting member" :success false}))
+    (try
+      (do
+        (monger.collection/insert-and-return "members" m)
+        {:message "Succesffully added member" :success true})
+      (catch Exception e
+        {:message (.getMessage e) :success false}))
+    {:message "Error: Invalid member" :success false}))
 
 
 (defn update [id member]
