@@ -17,10 +17,19 @@
     (monger.collection/insert-and-return "members" m)
     {:message "Error persisting member" :success false}))
 
+
+(defn update [id member]
+  (try
+    (do
+      (monger.collection/update "members" {:_id (org.bson.types.ObjectId. id)} member)
+      {:message "Successful update" :success true})
+    (catch Exception e
+      {:message (.getMessage e) :success false })))
+
 (defn edit-member [id updated-member-data]
   (if (true? (is-valid updated-member-data))
-    (monger.collection/update "members" {:_id (org.bson.types.ObjectId. id)} updated-member-data)
-  {:message "Error editing member" :success false}))
+    (update id updated-member-data)
+    (hash-map :message "Cannot save - member invalid" :success false)))
 
 (defn members []
   (monger.collection/find-maps "members"))

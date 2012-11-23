@@ -8,7 +8,7 @@
         [memjore.models.db :as db]
         [memjore.models.validation]
         [hiccup.form :only
-         [label text-field form-to drop-down submit-button text-area]]
+         [label text-field form-to drop-down submit-button text-area hidden-field]]
         [hiccup.element :only [link-to]]
         [clojure.tools.trace :as tracer]))
 
@@ -55,7 +55,7 @@
      (err-mess symbol)]))
 
 
-(defpartial user-fields [{:keys [fname lname mobile phone address tags] :as stuff}]
+(defpartial user-fields [{:keys [id fname lname mobile phone address tags] :as member}]
   [:div#editform
    (map edit-text-field [
                          [:fname fname "firstname" "First Name:"]
@@ -64,7 +64,7 @@
                          [:phone phone "phone number" "Phone Number:"]
                          [:address address "address" "Address:" :area-box]
                          [:tags tags "tags" "Tags:" :area-box]])
-   [:p   (submit-button "Submit") ]])
+   [:p  (hidden-field "id" (:_id member)) (submit-button "Submit") ]])
 
 
 (defpage sendtext "/sendtext" []
@@ -75,22 +75,19 @@
   (common/layout
    [:h2 "Send Email" ]))
 
-
-
-(defpage editpage "/members/edit/:id" {:keys [id]}
+(defpage editpage "/members/edit/:id" {:keys [id] :as req}
   (common/layout
    [:h2 "Edit Member"] 
    (form-to [:post "/members/editpagehandler/"]
    (user-fields (get-member id)))))
 
 (defpage editpagehandler [:post "/members/editpagehandler/"] {:as req}
-  (common/layout
    (do
-     (let [result (db/edit-member (:_id req) req)
-           error   (:error result)]
+     (let [id (:id req)
+           result (db/edit-member id req)]
        (if (:success result)
          (redirect "/members")
-         (render "/members/add" req))))))
+         (editpage (assoc req result))))))
 
 (defpage [:get "/members/add"] {:keys [error] :as params}
   (common/layout
