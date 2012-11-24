@@ -15,7 +15,8 @@
 
 (defpage "/" []
          (common/layout
-	   [:h2 "Home"]))
+          [:h2 "Home"]
+          [:p "Number of members"]))
 
 (defn display_member [member]
       [[:td (:fname member)] [:td (:lname member)]])
@@ -71,7 +72,7 @@
   (common/layout
    [:h2 "Send a text" ]))
 
-(defpage homepage "/sendemail" []
+(defpage email "/sendemail" []
   (common/layout
    [:h2 "Send Email" ]))
 
