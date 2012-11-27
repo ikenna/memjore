@@ -1,3 +1,4 @@
+
 (defproject memjore "0.1.0-SNAPSHOT"
             :description "Memjore - member management software"
             :dependencies [[org.clojure/clojure "1.4.0"]
@@ -8,7 +9,7 @@
                            [org.clojure/data.json "0.2.0"]
                            [com.novemberain/monger "1.3.1"]]
 
-            
+
             :plugins [[lein-pprint "1.1.1"]
                       [lein-swank "1.4.0"]
                       [lein-assoc "0.1.0"]
@@ -16,6 +17,6 @@
 
             :profiles {:dev
                        {:dependencies [[midje "1.4.0"]]}}
-             
+
             :main memjore.server)
 

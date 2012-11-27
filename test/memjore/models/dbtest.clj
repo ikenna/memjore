@@ -39,7 +39,9 @@
         ))
 
 
-(fact "return true if succesful update"
+(fact "Should return true if succesful update"
   (with-noir
-    (let [db-result (add-member john)]
-    (succesful-update db-result) => true)))
+    (let [successful-result (add-member john)
+          unsuccessful-result {}]
+      (successful-update? successful-result) => true
+      (successful-update? unsuccessful-result) => false)))

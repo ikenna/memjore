@@ -22,7 +22,7 @@
       [[:td (:fname member)] [:td (:lname member)]])
 
 (defn edit_button [member]
-  [:td (link-to (url-for editpage {:id (:_id member)}) "Edit")]) 
+  [:td (link-to (url-for editpage {:id (:_id member)}) "Edit")])
 
 (defn display-member-rows [members]
    (for [m members]
@@ -91,7 +91,7 @@
    (do
      (let [id (:id req)
            result (db/edit-member id req)]
-       (if (:success result)
+       (if (successful-update? result)
          (redirect "/members")
          (editpage (merge req result))))))
 
@@ -103,10 +103,6 @@
 
 (defpage addmember-handler [:post "/members/add"] {:as req}
   (let [result (db/add-member req)]
-    (if (:success result)
+    (if (successful-update? result)
       (redirect "/members")
       (addmember (merge result req)))))
-  
-
-
- 
