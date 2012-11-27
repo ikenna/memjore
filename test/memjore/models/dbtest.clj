@@ -14,10 +14,10 @@
           (:fname (get-member id)) => "John")))
 
 (fact "Can return error message if member to be persisted is invalid"
-      (with-noir 
-        (:message (add-member john)) => "Error persisting member"
+      (with-noir
+        (:message (add-member john)) => "Error: Invalid member"
         (provided (is-valid john) => false)
-        
+
         (:success (add-member john)) => false
         (provided (is-valid john) => false)))
 
@@ -29,14 +29,15 @@
 (fact "Can edit member"
       (with-noir
         (let [r0 (add-member john)
-              id (str (:_id r0))              
+              id (str (:_id r0))
               r1 (modify_fname_as_john_x r0)]
-          
-          (.getField (edit-member id r1) "updatedExisting") => true
+
+          (nil? (:_id (edit-member id r1))) => false
           (provided (is-valid r1) => true)
+
+
 
           (:fname (get-member id)) => "Johnx")
         ))
 
 
-                 

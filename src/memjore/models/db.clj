@@ -16,8 +16,8 @@
   (if (true? (is-valid m))
     (try
       (do
-        (monger.collection/insert-and-return "members" m)
-        {:message "Succesffully added member" :success true})
+        (monger.collection/insert-and-return "members" m))
+;;        {:message "Succesffully added member" :success true})
       (catch Exception e
         {:message (.getMessage e) :success false}))
     {:message "Error: Invalid member" :success false}))
@@ -27,7 +27,8 @@
   (try
     (do
       (monger.collection/update "members" {:_id (org.bson.types.ObjectId. id)} member)
-      {:message "Successful update" :success true})
+      (get-member id))
+    ;;  {:message "Successful update" :success true})
     (catch Exception e
       {:message (.getMessage e) :success false })))
 
