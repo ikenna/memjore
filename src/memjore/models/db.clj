@@ -6,6 +6,8 @@
 (monger.core/connect!)
 (monger.core/set-db! (monger.core/get-db "test"))
 
+(defn succesful-update [db-result]
+  (not (nil? (:_id db-result))))
 
 (defn get-member [id]
   (first

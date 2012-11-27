@@ -35,9 +35,11 @@
           (nil? (:_id (edit-member id r1))) => false
           (provided (is-valid r1) => true)
 
-
-
           (:fname (get-member id)) => "Johnx")
         ))
 
 
+(fact "return true if succesful update"
+  (with-noir
+    (let [db-result (add-member john)]
+    (succesful-update db-result) => true)))
