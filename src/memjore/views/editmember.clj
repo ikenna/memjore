@@ -9,7 +9,7 @@
   (common/layout
    [:h2 "Edit Member"]
    (common/display-error-messages-if-any req) ;; replace with flash
-   (form-to [:post "/members/editpagehandler/"]
+   (form-to [:post "/manage/members/editpagehandler/"]
             (common/user-fields (get-member id)))))
 
 (defpage editpagehandler [:post "/manage/members/editpagehandler/"] {:as req}

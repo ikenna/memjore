@@ -1,7 +1,5 @@
 (ns
-    ^{:author "Ikenna Nwaiwu"
-      :doc "This file contains the web display elements of the app "}
-    memjore.views.welcome
+    ^{:author "Ikenna Nwaiwu"} memjore.views.auth
   (:require [memjore.views.common :as common])
   (:use [noir.core :only [defpage defpartial render url-for pre-route]]
         [noir.response :only [redirect]]
@@ -11,9 +9,3 @@
          [label text-field form-to drop-down submit-button text-area hidden-field]]
         [hiccup.element :only [link-to]]
         [clojure.tools.trace :as tracer]))
-
-(defn logged-in? [] false)
-
-(pre-route "/manage/*" {}
-           (when-not (logged-in?)
-             (redirect "/")))

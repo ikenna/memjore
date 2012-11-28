@@ -1,6 +1,6 @@
 (ns ^{:author "Ikenna Nwaiwu"} memjore.views.addmember
   (:require [memjore.views.common :as common])
-  (:use [noir.core :only [defpage]]
+  (:use [noir.core :only [defpage defpartial render url-for pre-route]]
         [memjore.models.db :as db]
         [noir.response :only [redirect]]
         [hiccup.form :only [form-to]]))

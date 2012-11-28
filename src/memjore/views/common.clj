@@ -1,10 +1,18 @@
 (ns memjore.views.common
-  (:use [noir.core :only [defpartial]]
+  (:use [noir.core :only [defpartial pre-route]]
+        [noir.response :only [redirect]]
         [hiccup.element :only [link-to]]
         [memjore.models.validation]
         [hiccup.form :only
          [label text-field form-to drop-down submit-button text-area hidden-field]]
         [hiccup.page :only [include-css html5]]))
+
+
+(defn logged-in? [] false)
+
+(pre-route "/manage/*" {}
+           (when-not (logged-in?)
+             (redirect "/")))
 
 (defn main-links [links]
   "Returns links to main pages of the app"

@@ -1,12 +1,12 @@
-(ns ^{:author "Ikenna Nwaiwu"} memjore.views.welcome
+(ns ^{:author "Ikenna Nwaiwu"} memjore.views.listmembers
   (:require [memjore.views.common :as common])
-  (:use [noir.core :only [defpage defpartial render url-for pre-route]]
-        [noir.response :only [redirect]]
+  (:use
+   [noir.core :only [defpage defpartial render url-for]]
         [memjore.models.db :as db]
         [hiccup.form :only
          [label text-field form-to drop-down submit-button text-area hidden-field]]
         [hiccup.element :only [link-to]]
-        [clojure.tools.trace :as tracer]))
+        [memjore.views.editmember :only [editpage]]))
 
 
 (defn display_member [member]

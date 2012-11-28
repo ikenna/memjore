@@ -35,8 +35,7 @@
           (nil? (:_id (edit-member id r1))) => false
           (provided (is-valid r1) => true)
 
-          (:fname (get-member id)) => "Johnx")
-        ))
+          (:fname (get-member id)) => "Johnx")))
 
 
 (fact "Should return true if succesful update"
