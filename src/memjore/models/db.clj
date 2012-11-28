@@ -40,5 +40,6 @@
     (hash-map :message "Cannot save - member invalid" :success false)))
 
 (defn members []
+  ;;TODO : rename to get-all-members
   ;; Look for a way to sort the result according to first name
   (monger.collection/find-maps "members"))
