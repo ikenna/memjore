@@ -1,7 +1,15 @@
 (ns memjore.server
-  (:require [noir.server :as server]))
+  (:require [noir.server :as server])
+  (:use [noir.core :only [pre-route]]
+        [noir.response :only [redirect]]
+        [memjore.views.login :only [logged-in?]]))
 
 (server/load-views-ns 'memjore.views)
+
+
+(pre-route "/manage/*" {}
+           (when-not (logged-in?)
+             (redirect "/")))
 
 (defn -main [& m]
   (let [mode (keyword (or (first m) :dev))

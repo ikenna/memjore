@@ -1,4 +1,6 @@
+
 (ns memjore.views.common
+  (require [noir.session :as session])
   (:use [noir.core :only [defpartial pre-route]]
         [noir.response :only [redirect]]
         [hiccup.element :only [link-to]]
@@ -8,11 +10,13 @@
         [hiccup.page :only [include-css html5]]))
 
 
-(defn logged-in? [] false)
+(defn- flash-message "flash-message")
 
-(pre-route "/manage/*" {}
-           (when-not (logged-in?)
-             (redirect "/")))
+(defn get-flash-message []
+  (session/flash-get flash-message))
+
+(defn put-flash-message! [message]
+  (session/flash-put! flash-message message))
 
 (defn main-links [links]
   "Returns links to main pages of the app"
@@ -43,19 +47,6 @@
                 [:div#footer (footer)]]]))
 
 
-(defpartial login-layout [& content]
-            (html5
-              [:head
-               [:title "Memjore"]
-               (include-css "/css/style.css") ]
-              [:body
-               [:div#wrapper
-                [:div#header
-                 [:h1 "Log in"]
-                [:div#content content]
-                 [:div#footer (footer)]]]]))
-
-
 (defn edit-text-field [f]
   (let [[symbol value id name areabox] f]
     [:p (label id name)
@@ -78,4 +69,3 @@
 (defpartial display-error-messages-if-any [req]
   (if (not (= (:success req) true))
     [:h3.error (:message req)]))
-

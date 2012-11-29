@@ -2,3 +2,4 @@
 0. Add tests for controllers
 1. Authentication
 2. Email
+3. Setup db authentication
