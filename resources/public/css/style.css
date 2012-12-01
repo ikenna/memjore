@@ -25,12 +25,16 @@ body{
     color: white;
 }
 
-#footer{
+.logout {
+    float:right;
+}
+
+.center{
     text-align:center;
   }
 
-#footer p{
-   background-color: #999966;
+#footer{
+    text-align:center;
+    background-color: #999966;
     color: white;
-    padding: 2px;
 }

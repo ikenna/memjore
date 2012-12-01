@@ -5,7 +5,7 @@
         [memjore.views.common :only [footer get-flash-message put-flash-message!]]
         [memjore.views.home :only [home]]
         [hiccup.form :only
-         [label text-field form-to drop-down submit-button text-area hidden-field]]
+         [label text-field form-to drop-down submit-button text-area hidden-field password-field]]
         [hiccup.element :only [link-to]]
         [hiccup.page :only [include-css html5]]))
 
@@ -30,7 +30,7 @@
    (text-field "username" "")
    [:br]
    (label "password" "Password")
-   (text-field "password" )
+   (password-field "password" )
    [:br]
    (submit-button "Submit"))))
 
@@ -41,7 +41,7 @@
 (defn authenticates? [username password]
   (and (= username "admin") (= "password")))
 
-(defpage [:post "/login-authentication"] {:keys [username password]}
+(defpage login-authentication [:post "/login-authentication"] {:keys [username password]}
   (if (authenticates? username password)
 
     (do
@@ -52,3 +52,10 @@
     (do
       (put-flash-message! "Username or password invalid")
       (redirect (url-for login)))))
+
+(defpage log-out "/log-out" []
+  (do
+    (session/clear!)
+    (login-layout
+     [:p.center "Logged out"]
+     [:p.center (link-to "/" "Log in")])))

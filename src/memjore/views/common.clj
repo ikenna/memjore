@@ -35,6 +35,7 @@
                (include-css "/css/style.css") ]
               [:body
                [:div#wrapper
+                [:p.logout (link-to "/log-out" "Log out") ]
                 [:div#header
                  [:h1 "Memjore"]
                  [:p.main-menu
