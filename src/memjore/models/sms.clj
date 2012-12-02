@@ -40,23 +40,3 @@
   (merge
    (if (nil? (sms-password)) {:password "Sms password not set"} {})
    (if (nil? (sms-username)) {:username "Sms username not set"} {})))
-
-(defpage send-member-text "/manage/sendtext-handler" {:keys [textmessage]}
-  (do
-    (if (sms-username-password-set?)
-      (do
-        (send-text-to-all-members textmessage)
-        (put-flash-message! "Message sent"))
-      (do
-        (get-username-password-error-message)
-        (put-flash-message! "Error sending text.")))
-    (redirect (url-for sendtext))))
-
-(defpage sendtext "/manage/sendtext" []
-  (layout
-   [:h2 "Send a text" ]
-   [:p get-flash-message]
-   (form-to send-member-text
-            (text-area "textmessage")            ;
-            [:p]
-            (submit-button "Submit"))))
