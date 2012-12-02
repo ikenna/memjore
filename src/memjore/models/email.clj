@@ -9,8 +9,8 @@
 
 (defn send-email [member message from]
   (send-message ^{:host "smtp.gmail.com"
-                  :user "mail"
-                  :pass "nacfukexco"
+                  :user "xxxx"
+                  :pass "xxxx"
                   :port 465
                   :ssl :yes!!!11}
                 {:from from
