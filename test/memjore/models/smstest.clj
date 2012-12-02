@@ -8,7 +8,7 @@
 (fact "Should error if text username or password not set"
       (do
         (System/clearProperty "smsusername")
-        (System/clearProperty "smspassword")        
+        (System/clearProperty "smspassword")
         (send-member-text "Sampletext") =>  {:username "Sms username not set", :password "Sms password not set"}))
 
 

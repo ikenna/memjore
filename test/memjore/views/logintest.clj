@@ -24,7 +24,7 @@
 
 (fact "User can log out"
   (with-noir
-    (.contains (:body (send-request "/log-out"))
+    (.contains (:body (send-request  "/log-out"))
              "Logged out")  => true))
 
 
@@ -33,3 +33,4 @@
     (let [login-result    (send-request [:post (url-for login-authentication)]
                                         {:username "admin" :password "password"})]
       (get (:headers login-result) "Location")  => "/manage/home")))
+
