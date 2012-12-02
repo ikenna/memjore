@@ -17,5 +17,5 @@
      (let [id (:id req)
            result (db/edit-member id req)]
        (if (successful-update? result)
-         (redirect "/members")
+         (redirect "/manage/members")
          (editpage (merge req result))))))
