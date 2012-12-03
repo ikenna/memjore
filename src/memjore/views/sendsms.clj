@@ -16,7 +16,7 @@
        (common/put-flash-message!
         (str "Error sending text. "
              (vals (get-username-password-error-message))))))
-    (redirect (url-for sendtext))))
+    (redirect "/manage/sendtext")))
 
 
 (defpage "/manage/sendtext" []
