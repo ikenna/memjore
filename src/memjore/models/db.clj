@@ -1,9 +1,11 @@
 
 (ns ^{:doc "functions to pull data from the db"}
-    memjore.models.db
-    (:use [memjore.models.validation]
-          [memjore.models.utils :only [get-property]]))
+  memjore.models.db
+  (:require  [monger core collection])
+  (:use [memjore.models.validation]
+        [memjore.models.utils :only [get-property]]))
 
+(monger.core/connect-via-uri! (get-property :mongo-url))
 
 (defn successful-update? [db-result]
   (not (nil? (:_id db-result))))
@@ -15,21 +17,14 @@
 
 (defn add-member [m]
   (if (true? (is-valid m))
-    (try
-      (do
-        (monger.collection/insert-and-return "members" m))
-      (catch Exception e
-        {:message (.getMessage e) :success false}))
+    (monger.collection/insert-and-return "members" m)
     {:message "Error: Invalid member" :success false}))
 
 
 (defn update [id member]
-  (try
     (do
       (monger.collection/update "members" {:_id (org.bson.types.ObjectId. id)} member)
-      (get-member id))
-    (catch Exception e
-      {:message (.getMessage e) :success false })))
+      (get-member id)))
 
 (defn edit-member [id updated-member-data]
   (if (true? (is-valid updated-member-data))

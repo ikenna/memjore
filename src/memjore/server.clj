@@ -1,13 +1,10 @@
 (ns memjore.server
-  (:require [noir.server :as server]
-            [monger core collection])
+  (:require [noir.server :as server])
   (:use [noir.core :only [pre-route]]
         [noir.response :only [redirect]]
         [memjore.views.login :only [logged-in?]]))
 
 (server/load-views-ns 'memjore.views)
-
-(monger.core/connect-via-uri! (get-property :mongo-url))
 
 (pre-route "/manage/*" {}
            (when-not (logged-in?)
