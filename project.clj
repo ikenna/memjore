@@ -9,14 +9,15 @@
                            [org.clojure/data.json "0.2.0"]
                            [com.novemberain/monger "1.3.1"]]
 
-
             :plugins [[lein-pprint "1.1.1"]
                       [lein-swank "1.4.0"]
                       [lein-assoc "0.1.0"]
                       [lein-midje "2.0.1"]]
 
             :profiles {:dev
-                       {:dependencies [[midje "1.4.0"]]}}
+                       {:dependencies [[midje "1.4.0"]
+                                       [lein-marginalia "0.7.1"]]
+                        :mongourl ""}}
 
             :main memjore.server)
 

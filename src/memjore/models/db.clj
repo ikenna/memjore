@@ -1,10 +1,9 @@
+
 (ns ^{:doc "functions to pull data from the db"}
     memjore.models.db
-    (:require [monger core collection])
-    (:use [memjore.models.validation]))
+    (:use [memjore.models.validation]
+          [memjore.models.utils :only [get-property]]))
 
-(monger.core/connect!)
-(monger.core/set-db! (monger.core/get-db "test"))
 
 (defn successful-update? [db-result]
   (not (nil? (:_id db-result))))
@@ -19,7 +18,6 @@
     (try
       (do
         (monger.collection/insert-and-return "members" m))
-;;        {:message "Succesffully added member" :success true})
       (catch Exception e
         {:message (.getMessage e) :success false}))
     {:message "Error: Invalid member" :success false}))
@@ -30,7 +28,6 @@
     (do
       (monger.collection/update "members" {:_id (org.bson.types.ObjectId. id)} member)
       (get-member id))
-    ;;  {:message "Successful update" :success true})
     (catch Exception e
       {:message (.getMessage e) :success false })))
 
