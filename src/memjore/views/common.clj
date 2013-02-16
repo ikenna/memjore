@@ -7,7 +7,7 @@
         [memjore.models.validation]
         [hiccup.form :only
          [label text-field form-to drop-down submit-button text-area hidden-field]]
-        [hiccup.page :only [include-css html5]]))
+        [hiccup.page :only [include-css html5 include-js]]))
 
 
 (defn- flash-message "flash-message")
@@ -32,7 +32,8 @@
             (html5
               [:head
                [:title "memjore"]
-               (include-css "/css/style.css") ]
+               (include-css "/css/style.css")
+               (include-js "/ckeditor/ckeditor.js")]
               [:body
                [:div#wrapper
                 [:p.logout (link-to "/log-out" "Log out") ]

@@ -4,3 +4,4 @@
 1.1 logout
 2. Email
 3. Setup db authentication
+4. Setup alternative persistence to mongo db ? Say some embedded database?
