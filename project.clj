@@ -12,15 +12,15 @@
             :plugins [[lein-pprint "1.1.1"]
                       [lein-swank "1.4.0"]
                       [lein-assoc "0.1.0"]
-                      [lein-midje "2.0.1"]
+                      [lein-midje "2.0.4"]
                       [lein-ring "0.7.5"]]
 
             :profiles {:dev
-                       {:dependencies [[midje "1.4.0"]
-                                       [lein-marginalia "0.7.1"]]
-                        :mongourl ""}}
+                       {:dependencies [[midje "1.5-beta1"]
+                                       [lein-marginalia "0.7.1"]
+                                      ;; [activation "1.1-rev-1"]
+                                       [dumbster "1.5"]] }}
 
             :ring {:handler memjore.server/handler}
 
             :main memjore.server)
-

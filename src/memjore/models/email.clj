@@ -7,21 +7,24 @@
 (defn get-from [x]
   (System/getProperty "fromemail"))
 
+(defn smtp-server []
+  {:host "smtp.gmail.com"
+  :user "xxxx"
+  :pass "xxxx"
+  :port 465
+  :ssl :yes})
+
+(defn email []
+  {:from ""
+   :to ""
+   :subject ""
+   :body ""})
+
+(defn send-email-message [smtp-host email]
+  (send-message (with-meta email smtp-host)))
+
 (defn send-email [member message from]
-  (send-message ^{:host "smtp.gmail.com"
-                  :user "xxxx"
-                  :pass "xxxx"
-                  :port 465
-                  :ssl :yes!!!11}
-                {:from from
-                 :to [(:email member)]
-                 :subject (:subject message)
-                 :body (:body message)}))
+  (send-message (with-meta (smtp-server) (email))))
 
 (defn send-email-to-all [message]
   (map #(send-email % message (get-from)) (members) ))
-
-
-
-
-
